@@ -440,7 +440,7 @@
 <script>
   // ─── DigitalOcean Agent Config ───────────────────────────────────────────
   const DO_ENDPOINT = 'https://y5nfohqywl7goi3c3oo6tlun.agents.do-ai.run/api/v1/chat/completions';
-  const DO_ACCESS_KEY = 'u9SddflpwOgDe8TFe4MoJDG_RJ0qbseu'; // ← paste your regenerated key
+  const DO_ACCESS_KEY = 'https://y5nfohqywl7goi3c3oo6tlun.agents.do-ai.run'; // ← paste your regenerated key
   // ────────────────────────────────────────────────────────────────────────
 
   let conversationHistory = [];
@@ -546,7 +546,6 @@
     appendUserMsg(question);
     showTyping();
 
-    // Add to history
     conversationHistory.push({ role: 'user', content: question });
 
     try {
@@ -557,21 +556,15 @@
           'Authorization': `Bearer ${DO_ACCESS_KEY}`
         },
         body: JSON.stringify({
-          messages: [
-            
-            ...conversationHistory
-          ],
+          messages: conversationHistory,  // ✅ NO system message — set in DO Agent config
           stream: false
         })
       });
 
       const data = await res.json();
-
-      if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+      if (data.error) throw new Error(typeof data.error === 'string' ? data.error : JSON.stringify(data.error));
 
       const answer = data.choices?.[0]?.message?.content || 'No response received.';
-
-      // Add assistant reply to history
       conversationHistory.push({ role: 'assistant', content: answer });
 
       removeTyping();
