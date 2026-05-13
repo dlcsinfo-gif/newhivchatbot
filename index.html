@@ -558,15 +558,7 @@
         },
         body: JSON.stringify({
           messages: [
-            {
-              role: 'system',
-              content: `You are a clinical AI assistant for healthcare professionals in India. 
-Answer ONLY based on the NACO HIV Treatment & Care Guidelines in your knowledge base. 
-Be precise and clinically accurate using proper medical terminology. 
-If information is not found in the guidelines, say: "This is not covered in the current NACO guidelines. Please consult the complete document or a clinical specialist."
-Structure answers clearly with headings and bullet points where appropriate.
-Always mention relevant drug names, dosages, and regimens as stated in the guidelines.`
-            },
+            
             ...conversationHistory
           ],
           stream: false
